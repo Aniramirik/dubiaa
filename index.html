@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dubai Trip Countdown</title>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Dubai Trip Countdown">
-<link rel="apple-touch-icon" href="ihttps://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScxOUQ5kLNMUWASQ7Y8PD2mMJkYzo-dE21xA&s">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -47,18 +41,13 @@
             text-align: center;
             color: #1e3c72;
         }
-        #map {
-            height: 400px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
         footer {
             text-align: center;
             padding: 15px;
             background: #111a33;
             color: #ffffff;
         }
-        .flight-info {
+        .itinerary {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
@@ -67,15 +56,30 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        .flight-info h3 {
-            margin-bottom: 10px;
+        .itinerary ul {
+            list-style-type: none;
+            padding: 0;
         }
-        .flight-info p {
-            margin: 5px 0;
+        .itinerary li {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f7f9fc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
-        .loading {
+        .itinerary li:hover {
+            background: #d9f0fc;
+        }
+        .trip-image {
             text-align: center;
-            font-size: 18px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .trip-image img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -87,41 +91,27 @@
     <section class="countdown">
         <div id="countdown-timer">Loading countdown...</div>
     </section>
-    <div class="flight-info">
-        <h3>Flight Number: EK752</h3>
-        <p>Status: <span id="flight-status" class="loading">Fetching data...</span></p>
-        <p>Departure: <span id="departure-time" class="loading">Fetching data...</span></p>
-        <p>Arrival: <span id="arrival-time" class="loading">Fetching data...</span></p>
-    </div>
 
-    <section>
-        <h2>Live Flight Map</h2>
-        <div id="map"></div>
+    <section class="trip-image">
+        <img src="dubai-skyline.jpg" alt="Dubai Skyline">
     </section>
+
     <section class="itinerary">
         <h2>Your Itinerary</h2>
-        <ul class="itinerary-list">
-            <li class="itinerary-item" data-date="2024-12-20">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1Os7UIKq8ExIOmdzJhOqX1EilNa2nAehfpQ&s" alt="Flight">
-                <div class="details">
-                    <h3>Flight to Dubai</h3>
-                    <p>Flight Number: EK752</p>
-                    <p>Khadija Amsrouy Seat Number: 17D</p>
-                    <p>Mrs. Aicha Laraki Seat Number: 17B</p>
-                    <p>Mr. Anir Laslami Seat Number: 16A</p>
-                    <p>Importance: High</p>
-                    <p>Distance: N/A (Air)</p>
-                </div>
+        <ul>
+            <li class="itinerary-item" onclick="location.href='details.html';">
+                <h3>Flight to Dubai</h3>
+                <p>Flight: Emirates A380-800</p>
+                <p>Seats: 16B, 17B, 17D</p>
             </li>
         </ul>
     </section>
+
     <footer>
         <p>Enjoy your Dubai adventure!</p>
     </footer>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Countdown Timer
         const countdownTimer = document.getElementById('countdown-timer');
         const tripDate = new Date('2024-12-20T00:00:00');
 
@@ -137,90 +127,15 @@
 
             const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            const minutes = Math.floor((timeDiff % (1000 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDiff % 1000) / 1000);
 
             countdownTimer.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
         const timerInterval = setInterval(updateCountdown, 1000);
         updateCountdown();
-
-        // Map Initialization
-        const map = L.map('map').setView([25.276987, 55.296249], 5); // Centered near Dubai
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-        }).addTo(map);
-
-        const planeIcon = L.icon({
-            iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Plane_font_awesome.svg/1200px-Plane_font_awesome.svg.png',
-            iconSize: [32, 32],
-        });
-
-        let planeMarker;
-
-        // Fetch Real-Time Plane Data
-        const apiKey = 'a02663c023132f236cb177b8c1eb61b2'; // Your API key
-        const flightNumber = 'EK752';
-      
-
-async function fetchFlightStatus() {
-    try {
-        // Call the AviationStack API for flight information
-        const response = await fetch(`http://api.aviationstack.com/v1/flights?access_key=${apiKey}&flight_iata=${flightNumber}`);
-        const data = await response.json();
-        const flight = data.data[0]; // Get the first flight result
-
-        if (flight) {
-            // Display flight details
-            document.getElementById('flight-status').textContent = flight.flight_status || 'Unknown';
-            document.getElementById('departure-time').textContent = flight.departure.estimated || 'N/A';
-            document.getElementById('arrival-time').textContent = flight.arrival.estimated || 'N/A';
-        } else {
-            // Handle no flight found
-            document.getElementById('flight-status').textContent = 'Flight not found.';
-            document.getElementById('departure-time').textContent = 'N/A';
-            document.getElementById('arrival-time').textContent = 'N/A';
-        }
-    } catch (error) {
-        console.error('Error fetching flight data:', error);
-        document.getElementById('flight-status').textContent = 'Error fetching data.';
-        document.getElementById('departure-time').textContent = 'Error';
-        document.getElementById('arrival-time').textContent = 'Error';
-    }
-}
-
-// Fetch the flight status on page load
-fetchFlightStatus();
-        async function fetchFlightLocation() {
-            try {
-                const response = await fetch(`http://api.aviationstack.com/v1/flights?access_key=${apiKey}&flight_iata=${flightNumber}`);
-                const data = await response.json();
-                const flight = data.data[0];
-
-                if (flight && flight.live) {
-                    const { latitude, longitude } = flight.live;
-
-                    if (latitude && longitude) {
-                        if (planeMarker) {
-                            planeMarker.setLatLng([latitude, longitude]);
-                        } else {
-                            planeMarker = L.marker([latitude, longitude], { icon: planeIcon }).addTo(map);
-                        }
-
-                        map.setView([latitude, longitude], 5);
-                    }
-                } else {
-                    console.log('Flight not found or no live data available.');
-                }
-            } catch (error) {
-                console.error('Error fetching flight location:', error);
-            }
-        }
-
-        // Update flight location every 30 seconds
-        setInterval(fetchFlightLocation, 30000);
-        fetchFlightLocation();
     </script>
 </body>
 </html>
+
