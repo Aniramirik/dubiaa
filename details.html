@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Details</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f3f4f7;
+            color: #333333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+        }
+        .seat-map {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .seat {
+            padding: 10px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        .seat:hover {
+            background: #a8dadc;
+        }
+        .seat-tooltip {
+            display: none;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e3c72;
+            color: #ffffff;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+        .seat:hover .seat-tooltip {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Flight to Dubai</h1>
+        <p><strong>Flight:</strong> Emirates A380-800</p>
+        <p><strong>Departure:</strong> 2024-12-20</p>
+        <p><strong>Importance:</strong> High</p>
+        <p><strong>Extras:</strong> Seat Map</p>
+
+        <div class="seat-map">
+            <div class="seat">
+                16B
+                <div class="seat-tooltip">Anir</div>
+            </div>
+            <div class="seat">
+                17B
+                <div class="seat-tooltip">Aicha</div>
+            </div>
+            <div class="seat">
+                17D
+                <div class="seat-tooltip">Nana</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
