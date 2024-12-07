@@ -282,7 +282,40 @@ function sendTestNotification() {
 
 // Attach the function to the button click
 document.getElementById('test-notification').addEventListener('click', sendTestNotification);
+     // Push Notification function
+        function sendPushNotification() {
+            const uaefacts = [
+                'The UAE has one of the highest per capita incomes in the world.',
+                'Dubai is home to the world\'s tallest building, the Burj Khalifa.',
+                'The UAE has 7 emirates, and each has its own ruler.',
+                'The UAE is known for its luxurious shopping malls, many of which are larger than some cities.',
+                'The Dubai Mall has over 1,200 stores and is one of the largest shopping malls in the world.',
+                'The UAE has developed a network of artificial islands, including Palm Jumeirah.',
+                'The UAE has no rivers but is home to beautiful beaches and desert landscapes.',
+                'The Burj Khalifa can be seen from up to 60 kilometers away on a clear day.'
+            ];
 
+            const fact = uaefacts[Math.floor(Math.random() * uaefacts.length)];
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification("UAE Fact of the Day", {
+                    body: fact,
+                    icon: 'https://example.com/icon.png',
+                });
+            } else if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification("UAE Fact of the Day", {
+                            body: fact,
+                            icon: 'https://example.com/icon.png',
+                        });
+                    }
+                });
+            }
+        }
+
+        // Trigger notification
+        setInterval(sendPushNotification, 24 * 60 * 60 * 1000); // Send notification daily
         
 </script>
 </body> 
