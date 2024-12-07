@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Dubai Trip">
-    <link rel="apple-touch-icon" href="https://play-lh.googleusercontent.com/9WAR0MEAp7OzPRoZ5Ss5KZXSPspYxaSjVj9xMdIUKIc3xf6ehZHboYbH34fKgdnasA">
+    <link rel="apple-touch-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScxOUQ5kLNMUWASQ7Y8PD2mMJkYzo-dE21xA&s">
 
     <style>
         body {
@@ -151,7 +151,7 @@
     </section>
 
     <section class="trip-image">
-        <img src="dubai-skyline.jpg" alt="Dubai Skyline">
+        <img src="https://s7g10.scene7.com/is/image/barcelo/stopover-in-dubai_dubai-by-night?&&fmt=webp-alpha&qlt=75&wid=1200&fit=crop,1" alt="Dubai Skyline">
     </section>
 
     <section class="itinerary">
@@ -180,7 +180,7 @@
         <div class="popup-content">
             <h2>Today is the day!</h2>
             <p>Your Dubai adventure begins today. Don't forget to check the following:</p>
-            <ul>                <li><input type="checkbox" id="check1"> CALL ANIR</li>
+            <ul>
                 <li><input type="checkbox" id="check1"> Pack your travel essentials (passport, ticket, etc.)</li>
                 <li><input type="checkbox" id="check2"> Make sure your phone is fully charged</li>
                 <li><input type="checkbox" id="check3"> Double-check your accommodation details</li>
@@ -193,7 +193,7 @@
     <script>
         // Countdown Timer
         const countdownTimer = document.getElementById('countdown-timer');
-        const tripDate = new Date('2024-12-20T00:00:00');
+        const tripDate = new Date('2024-12-21T00:00:00');
 
         function updateCountdown() {
             const now = new Date();
@@ -203,6 +203,7 @@
                 countdownTimer.textContent = "It's time for Dubai!";
                 clearInterval(timerInterval);
                 showPopup();
+                sendPushNotification();
                 return;
             }
 
@@ -230,8 +231,31 @@
         window.showPopupTest = function() {
             showPopup();
         }
-    </script>
-</body>
+
+        // Push Notification function
+        function sendPushNotification() {
+            if (Notification.permission ===
+            'granted') { new Notification('Time to start your Dubai adventure!', { body: 'Don’t miss your flight!', icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScxOUQ5kLNMUWASQ7Y8PD2mMJkYzo-dE21xA&s' }); } }
+
+    // Request Notification Permission
+    if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                console.log('Notification permission granted');
+            }
+        });
+    }
+
+    function sendNotification() {}
+    const notificationTitle = "Welcome to Dubai Countdown!";
+    const notificationOptions = {
+        body: "Your Dubai adventure is just around the corner!",
+        icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScxOUQ5kLNMUWASQ7Y8PD2mMJkYzo-dE21xA&s", // Path to your app icon
+        vibrate: [200, 100, 200], // Vibration pattern
+        tag: "dubai-countdown",  // Ensures a single notification
+        renotify: true,          // Allow repeated notifications
+    };
+
+</script>
+</body> 
 </html>
-
-
