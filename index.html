@@ -170,7 +170,7 @@
             </li>
         </ul>
     </section>
-
+<button id="test-notification" class="go-btn">Send Test Notification</button>
     <footer>
         <p>Enjoy your Dubai adventure!</p>
     </footer>
@@ -256,6 +256,34 @@
         renotify: true,          // Allow repeated notifications
     };
 
+// Function to send a test notification
+function sendTestNotification() {
+    if (Notification.permission === 'granted') {
+        const notificationTitle = "Test Notification";
+        const notificationOptions = {
+            body: "This is a test notification to ensure everything works!",
+            icon: "icon-192x192.png", // Replace with your app's icon
+            vibrate: [100, 50, 100],  // Vibration pattern
+            tag: "test-notification",
+        };
+        new Notification(notificationTitle, notificationOptions);
+    } else if (Notification.permission === 'default') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                sendTestNotification();
+            } else {
+                alert("Notification permission denied. Enable it to see notifications.");
+            }
+        });
+    } else {
+        alert("Notification permission has been denied. Please enable it in your browser settings.");
+    }
+}
+
+// Attach the function to the button click
+document.getElementById('test-notification').addEventListener('click', sendTestNotification);
+
+        
 </script>
 </body> 
 </html>
