@@ -192,31 +192,34 @@
 
     <script>
         // Countdown Timer
-        const countdownTimer = document.getElementById('countdown-timer');
-        const tripDate = new Date('2024-12-21T00:00:00');
+     // Countdown Timer
+const countdownTimer = document.getElementById('countdown-timer');
+const tripDate = new Date('2024-12-21T00:00:00');
 
-        function updateCountdown() {
-            const now = new Date();
-            const timeDiff = tripDate - now;
+function updateCountdown() {
+    const now = new Date();
+    const timeDiff = tripDate - now;
 
-            if (timeDiff <= 0) {
-                countdownTimer.textContent = "It's time for Dubai!";
-                clearInterval(timerInterval);
-                showPopup();
-                sendPushNotification();
-                return;
-            }
+    if (timeDiff <= 0) {
+        countdownTimer.textContent = "It's time for Dubai!";
+        clearInterval(timerInterval);
+        showPopup();
+        sendPushNotification();
+        return;
+    }
 
-            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDiff % (1000 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDiff % 1000) / 1000);
+    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-            countdownTimer.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-        }
+    countdownTimer.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
 
-        const timerInterval = setInterval(updateCountdown, 1000);
-        updateCountdown();
+// Update the countdown every second
+const timerInterval = setInterval(updateCountdown, 1000);
+updateCountdown();
+
 
         // Pop-up function
         function showPopup() {
